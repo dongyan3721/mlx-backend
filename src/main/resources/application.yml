@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.40.131.167:3306/gen_shin_impact?useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: u8d9*qHmU03@wG%)uiFa
+
