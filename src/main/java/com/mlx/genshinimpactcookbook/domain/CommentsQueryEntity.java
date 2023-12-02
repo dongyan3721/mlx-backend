@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentsQueryEntity {
-    private String RoleName;
+    private String roleName;
     private int pageNum;
     private int startNum;
     private int endNum;

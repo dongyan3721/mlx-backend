@@ -5,9 +5,13 @@ import com.mlx.genshinimpactcookbook.domain.User;
 import com.mlx.genshinimpactcookbook.domain.common.HttpMessage;
 import com.mlx.genshinimpactcookbook.domain.common.HttpStatus;
 import com.mlx.genshinimpactcookbook.domain.common.HttpToken;
+import com.mlx.genshinimpactcookbook.exception.ServiceException;
 import com.mlx.genshinimpactcookbook.service.IUserService;
+import com.mlx.genshinimpactcookbook.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @CrossOrigin
 @RestController
@@ -27,7 +31,7 @@ public class UserController {
     @AccessWithoutRecognize
     public HttpMessage userLoginViaEmail(User user){
         if(userService.checkValidityViaEmail(user)){
-            return new HttpToken(HttpStatus.SUCCESS, "success", "000");
+            return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateEmailToken(user));
         }else{
             return new HttpMessage(HttpStatus.FORBIDDEN, "wrong account or password!");
         }
@@ -43,7 +47,7 @@ public class UserController {
     @AccessWithoutRecognize
     public HttpMessage userLoginViaAccount(User user){
         if(userService.checkValidityViaAccount(user)){
-            return new HttpToken(HttpStatus.SUCCESS, "success", "000");
+            return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateAccountToken(user));
         }else{
             return new HttpMessage(HttpStatus.FORBIDDEN, "wrong account or password!");
         }
@@ -58,8 +62,12 @@ public class UserController {
     @PostMapping("/register")
     @AccessWithoutRecognize
     public HttpMessage userRegisterViaEmail(User user){
-        userService.insertNewUserViaEmail(user);
-        return new HttpMessage(HttpStatus.SUCCESS, "success");
+        try {
+            userService.insertNewUserViaEmail(user);
+            return new HttpMessage(HttpStatus.SUCCESS, "success");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new ServiceException("重复注册！", HttpStatus.SUCCESS);
+        }
     }
 
 

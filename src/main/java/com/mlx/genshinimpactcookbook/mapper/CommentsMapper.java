@@ -4,7 +4,6 @@ import com.mlx.genshinimpactcookbook.domain.Comments;
 import com.mlx.genshinimpactcookbook.domain.CommentsQueryEntity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

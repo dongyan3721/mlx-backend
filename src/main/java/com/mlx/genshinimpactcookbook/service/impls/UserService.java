@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @Service
 public class UserService implements IUserService {
 
@@ -49,10 +51,14 @@ public class UserService implements IUserService {
      */
     @Override
     @Transactional
-    public int insertNewUserViaEmail(User user) {
-        user.setAccount(usersMapper.selectOneLastCreatedAccount()+1);
-        user.setNickName("用户"+ RandomLengthStringGenerator.generateRandomString(6));
-        return usersMapper.insertNewUserViaEmail(user);
+    public int insertNewUserViaEmail(User user) throws SQLIntegrityConstraintViolationException {
+        if(usersMapper.selectExistEmail(user)!=null){
+            throw new SQLIntegrityConstraintViolationException();
+        }else{
+            user.setAccount(usersMapper.selectOneLastCreatedAccount()+1);
+            user.setNickName("用户"+ RandomLengthStringGenerator.generateRandomString(6));
+            return usersMapper.insertNewUserViaEmail(user);
+        }
     }
 
     // 与用户注册配套使用，写在这里提醒我下有这个接口

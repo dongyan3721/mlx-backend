@@ -41,20 +41,28 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         HashMap<String, Object> map = JwtTokenUtil.parseToken(token);
 
+        // token无效，抛未认证异常
         if((boolean) map.get("valid")){
-            if(((Date)map.get("expired")).before(new Date())){
+            // token超时，抛超时异常
+            if((new Date()).before(((Date)map.get("expired")))){
+                // 没有email或者account的信息，抛未认证异常
                 if((boolean) map.get("continue")){
+                    // 通过Email生成的token
                     if(map.get("email")!=null){
                         String password = (String) map.get("password");
                         String email = (String) map.get("email");
+                        // 账号密码正确，放行
                         if(RSAUtil.decrypt(password, privateKey).equals(RSAUtil.decrypt(usersMapper.selectEncryptedPasswordByEmail(email), privateKey))){
                             return true;
                         }else{
                             throw new ServiceException("invalid token!", HttpStatus.UNAUTHORIZED);
                         }
-                    }else{
+                    }
+                    // 通过account生成的token
+                    else{
                         String password = (String) map.get("password");
                         int account = Integer.parseInt((String) map.get("account"));
+                        // 账号密码正确，放行
                         if(RSAUtil.decrypt(password, privateKey).equals(RSAUtil.decrypt(usersMapper.selectEncryptedPasswordByAccount(account), privateKey))){
                             return true;
                         }else{

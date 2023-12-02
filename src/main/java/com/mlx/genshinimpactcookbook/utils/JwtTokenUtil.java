@@ -27,6 +27,18 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+    public static String generateAccountToken(User user){
+        JwtBuilder builder = Jwts.builder();
+        return builder.setHeaderParam("typ", "JWT").setHeaderParam("alg", "HS256")
+                // 设置载荷
+                .claim("account", user.getAccount())
+                .claim("password", user.getEncryptedPassword())
+                .setExpiration(new Date(System.currentTimeMillis()+DAY_MILLIONS))
+                // 设置签名算法和签名字符串
+                .signWith(SignatureAlgorithm.HS256, SIGNATURE)
+                .compact();
+    }
+
     public static HashMap<String, Object> parseToken(String token){
         HashMap<String, Object> map = new HashMap<>();
         JwtParser parser = Jwts.parser();

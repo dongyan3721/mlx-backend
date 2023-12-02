@@ -21,4 +21,7 @@ public interface UsersMapper {
 
     @Update("update users set nick_name = #{nickName} where register_email = #{registerEmail}")
     public int updateUserName(User user);
+
+    @Select("select register_email from users where register_email = #{registerEmail}")
+    public String selectExistEmail(User user);
 }
