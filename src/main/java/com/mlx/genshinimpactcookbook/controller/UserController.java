@@ -1,5 +1,6 @@
 package com.mlx.genshinimpactcookbook.controller;
 
+import com.mlx.genshinimpactcookbook.annotation.AccessWithoutRecognize;
 import com.mlx.genshinimpactcookbook.domain.User;
 import com.mlx.genshinimpactcookbook.domain.common.HttpMessage;
 import com.mlx.genshinimpactcookbook.domain.common.HttpStatus;
@@ -16,7 +17,14 @@ public class UserController {
     @Autowired
     IUserService userService;
 
+    /**
+     * 用户通过邮箱登录
+     * @param user 自动封装的登录信息
+     * @return 登录成功或失败消息
+     * 登录不需要jwt验证
+     */
     @PostMapping("/email")
+    @AccessWithoutRecognize
     public HttpMessage userLoginViaEmail(User user){
         if(userService.checkValidityViaEmail(user)){
             return new HttpToken(HttpStatus.SUCCESS, "success", "000");
@@ -25,7 +33,14 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户通过账户登录
+     * @param user 自动封装的登录信息
+     * @return 登录成功或失败消息
+     * 登录不需要jwt验证
+     */
     @PostMapping("/account")
+    @AccessWithoutRecognize
     public HttpMessage userLoginViaAccount(User user){
         if(userService.checkValidityViaAccount(user)){
             return new HttpToken(HttpStatus.SUCCESS, "success", "000");
@@ -34,7 +49,14 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户注册
+     * @param user 自动封装的用户信息
+     * @return 注册成功或失败消息
+     * 注册不需要jwt验证
+     */
     @PostMapping("/register")
+    @AccessWithoutRecognize
     public HttpMessage userRegisterViaEmail(User user){
         userService.insertNewUserViaEmail(user);
         return new HttpMessage(HttpStatus.SUCCESS, "success");
