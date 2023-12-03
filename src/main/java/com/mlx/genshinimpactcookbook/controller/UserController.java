@@ -29,7 +29,7 @@ public class UserController {
      */
     @PostMapping("/email")
     @AccessWithoutRecognize
-    public HttpMessage userLoginViaEmail(User user){
+    public HttpMessage userLoginViaEmail(@RequestBody User user){
         if(userService.checkValidityViaEmail(user)){
             return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateEmailToken(user));
         }else{
@@ -45,7 +45,7 @@ public class UserController {
      */
     @PostMapping("/account")
     @AccessWithoutRecognize
-    public HttpMessage userLoginViaAccount(User user){
+    public HttpMessage userLoginViaAccount(@RequestBody User user){
         if(userService.checkValidityViaAccount(user)){
             return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateAccountToken(user));
         }else{
@@ -61,7 +61,7 @@ public class UserController {
      */
     @PostMapping("/register")
     @AccessWithoutRecognize
-    public HttpMessage userRegisterViaEmail(User user){
+    public HttpMessage userRegisterViaEmail(@RequestBody User user){
         try {
             userService.insertNewUserViaEmail(user);
             return new HttpMessage(HttpStatus.SUCCESS, "success");
@@ -75,7 +75,7 @@ public class UserController {
      * 修改用户名需要jwt验证，学完了再修改
      */
     @PutMapping("/modify")
-    public HttpMessage userModifyUsername(User user){
+    public HttpMessage userModifyUsername(@RequestBody User user){
         userService.updateUserName(user);
         return new HttpMessage(HttpStatus.SUCCESS, "success");
     }

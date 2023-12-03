@@ -7,10 +7,7 @@ import com.mlx.genshinimpactcookbook.domain.common.HttpQueryListResult;
 import com.mlx.genshinimpactcookbook.domain.common.HttpStatus;
 import com.mlx.genshinimpactcookbook.service.ICommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,14 +21,14 @@ public class CommentsController {
 
     // TODO jwt recognize
     @PostMapping("/get-comments")
-    public HttpMessage getRoleComments(CommentsQueryEntity commentsQueryEntity){
+    public HttpMessage getRoleComments(@RequestBody CommentsQueryEntity commentsQueryEntity){
         List<Comments> comments = commentsService.selectComments(commentsQueryEntity);
         return new HttpQueryListResult(HttpStatus.SUCCESS, "success", comments, comments.size());
     }
 
     @PostMapping("/add-comment")
     // TODO jwt recognize
-    public HttpMessage addRoleComment(Comments comments){
+    public HttpMessage addRoleComment(@RequestBody Comments comments){
         commentsService.addNewCommentToComments(comments);
         return new HttpMessage(HttpStatus.SUCCESS, "success");
     }
