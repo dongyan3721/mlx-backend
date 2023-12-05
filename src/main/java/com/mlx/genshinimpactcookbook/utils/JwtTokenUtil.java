@@ -1,6 +1,8 @@
 package com.mlx.genshinimpactcookbook.utils;
 
 import com.mlx.genshinimpactcookbook.domain.User;
+import com.mlx.genshinimpactcookbook.domain.common.HttpStatus;
+import com.mlx.genshinimpactcookbook.exception.ServiceException;
 import io.jsonwebtoken.*;
 
 import java.util.Date;
@@ -44,15 +46,21 @@ public class JwtTokenUtil {
         JwtParser parser = Jwts.parser();
         map.put("valid", parser.isSigned(token));
         if ((boolean)map.get("valid")) {
-            Jws<Claims> parsed = parser.setSigningKey(SIGNATURE).parseClaimsJws(token);
-            Claims body = parsed.getBody();
-            map.put("email", body.get("email"));
-            map.put("password", body.get("password"));
-            map.put("account", body.get("account"));
-            map.put("expired", body.getExpiration());
-            map.put("signature", parsed.getSignature());
-            map.put("continue", map.get("email") != null || map.get("account") != null);
+            Jws<Claims> parsed = null;
+            try{
+                parsed = parser.setSigningKey(SIGNATURE).parseClaimsJws(token);
+                Claims body = parsed.getBody();
+                map.put("email", body.get("email"));
+                map.put("password", body.get("password"));
+                map.put("account", body.get("account"));
+                map.put("expired", body.getExpiration());
+                map.put("signature", parsed.getSignature());
+                map.put("continue", map.get("email") != null || map.get("account") != null);
+                return map;
+            }catch (ExpiredJwtException e){
+                throw new ServiceException("令牌超时！", HttpStatus.FORBIDDEN);
+            }
         }
-        return map;
+        throw new ServiceException("令牌超时！", HttpStatus.FORBIDDEN);
     }
 }
