@@ -40,7 +40,7 @@ class UsersMapperTest {
         user.setRegisterEmail("2135050509@st.usst.edu.cn");
         user.setNickName("用户"+ RandomLengthStringGenerator.generateRandomString(6));
         user.setAccount(usersMapper.selectOneLastCreatedAccount()+1);
-        user.setEncryptedPassword(RSAUtil.encrypt("liruiyys", publicKey));
+        user.setEncryptedPassword(RSAUtil.encrypt("liruiyys".getBytes(), publicKey));
         usersMapper.insertNewUserViaEmail(user);
     }
 

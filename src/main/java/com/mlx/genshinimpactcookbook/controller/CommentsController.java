@@ -6,6 +6,8 @@ import com.mlx.genshinimpactcookbook.domain.common.HttpMessage;
 import com.mlx.genshinimpactcookbook.domain.common.HttpQueryListResult;
 import com.mlx.genshinimpactcookbook.domain.common.HttpStatus;
 import com.mlx.genshinimpactcookbook.service.ICommentsService;
+import com.mlx.genshinimpactcookbook.utils.IpRegionConvertUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,6 @@ public class CommentsController {
     @Autowired
     private ICommentsService commentsService;
 
-    // TODO jwt recognize
     @PostMapping("/get-comments")
     public HttpMessage getRoleComments(@RequestBody CommentsQueryEntity commentsQueryEntity){
         List<Comments> comments = commentsService.selectComments(commentsQueryEntity);
@@ -27,8 +28,9 @@ public class CommentsController {
     }
 
     @PostMapping("/add-comment")
-    // TODO jwt recognize
-    public HttpMessage addRoleComment(@RequestBody Comments comments){
+    public HttpMessage addRoleComment(@RequestBody Comments comments, HttpServletRequest request){
+        String remoteAddr = request.getRemoteAddr();
+        comments.setAddress(IpRegionConvertUtil.ipConvertToAddress(remoteAddr));
         commentsService.addNewCommentToComments(comments);
         return new HttpMessage(HttpStatus.SUCCESS, "success");
     }

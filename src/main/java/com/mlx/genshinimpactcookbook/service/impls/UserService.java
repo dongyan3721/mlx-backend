@@ -72,4 +72,18 @@ public class UserService implements IUserService {
     public int updateUserName(User user) {
         return usersMapper.updateUserName(user);
     }
+
+    @Override
+    public User selectUserByRegisterEmail(User user){
+        User user1 = usersMapper.selectUserByRegisterEmail(user);
+        user1.setEncryptedPassword("zhebushixiaohaizigaikande");
+        return user1;
+    }
+
+    @Override
+    public User selectUserByAccount(User user){
+        User user1 = usersMapper.selectUserByAccount(user);
+        user1.setEncryptedPassword("zhebushixiaohaizigaikande");
+        return user1;
+    }
 }

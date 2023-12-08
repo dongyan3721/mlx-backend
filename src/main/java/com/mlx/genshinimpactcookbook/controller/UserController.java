@@ -30,8 +30,9 @@ public class UserController {
     @PostMapping("/email")
     @AccessWithoutRecognize
     public HttpMessage userLoginViaEmail(@RequestBody User user){
+        System.out.println(user);
         if(userService.checkValidityViaEmail(user)){
-            return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateEmailToken(user));
+            return new HttpToken(HttpStatus.SUCCESS, "success", userService.selectUserByRegisterEmail(user), JwtTokenUtil.generateEmailToken(user));
         }else{
             return new HttpMessage(HttpStatus.FORBIDDEN, "wrong account or password!");
         }
@@ -47,7 +48,7 @@ public class UserController {
     @AccessWithoutRecognize
     public HttpMessage userLoginViaAccount(@RequestBody User user){
         if(userService.checkValidityViaAccount(user)){
-            return new HttpToken(HttpStatus.SUCCESS, "success", JwtTokenUtil.generateAccountToken(user));
+            return new HttpToken(HttpStatus.SUCCESS, "success", userService.selectUserByAccount(user), JwtTokenUtil.generateAccountToken(user));
         }else{
             return new HttpMessage(HttpStatus.FORBIDDEN, "wrong account or password!");
         }
@@ -62,6 +63,7 @@ public class UserController {
     @PostMapping("/register")
     @AccessWithoutRecognize
     public HttpMessage userRegisterViaEmail(@RequestBody User user){
+        System.out.println(user);
         try {
             userService.insertNewUserViaEmail(user);
             return new HttpMessage(HttpStatus.SUCCESS, "success");

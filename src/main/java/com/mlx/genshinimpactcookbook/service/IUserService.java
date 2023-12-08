@@ -17,4 +17,8 @@ public interface IUserService {
     public int selectOneLastCreatedAccount();
 
     public int updateUserName(User user);
+
+    public User selectUserByRegisterEmail(User user);
+
+    public User selectUserByAccount(User user);
 }

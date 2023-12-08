@@ -24,4 +24,10 @@ public interface UsersMapper {
 
     @Select("select register_email from users where register_email = #{registerEmail}")
     public String selectExistEmail(User user);
+
+    @Select("select reg_id, nick_name, register_phone, register_email, encrypted_password, account, created_time from users where register_email = #{registerEmail}")
+    public User selectUserByRegisterEmail(User user);
+
+    @Select("select reg_id, nick_name, register_phone, register_email, encrypted_password, account, created_time from users where register_email = #{account}")
+    public User selectUserByAccount(User user);
 }
