@@ -18,7 +18,7 @@ public interface IUserService {
 
     public int updateUserName(User user);
 
-    public User selectUserByRegisterEmail(User user);
+    public User selectUserByRegisterEmail(String email);
 
     public User selectUserByAccount(User user);
 }

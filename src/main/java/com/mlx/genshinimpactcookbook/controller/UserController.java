@@ -32,7 +32,8 @@ public class UserController {
     public HttpMessage userLoginViaEmail(@RequestBody User user){
         System.out.println(user);
         if(userService.checkValidityViaEmail(user)){
-            return new HttpToken(HttpStatus.SUCCESS, "success", userService.selectUserByRegisterEmail(user), JwtTokenUtil.generateEmailToken(user));
+            System.out.println(userService.selectUserByRegisterEmail(user.getRegisterEmail()));
+            return new HttpToken(HttpStatus.SUCCESS, "success", userService.selectUserByRegisterEmail(user.getRegisterEmail()), JwtTokenUtil.generateEmailToken(user));
         }else{
             return new HttpMessage(HttpStatus.FORBIDDEN, "wrong account or password!");
         }

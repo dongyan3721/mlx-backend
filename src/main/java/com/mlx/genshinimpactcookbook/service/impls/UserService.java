@@ -74,9 +74,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User selectUserByRegisterEmail(User user){
-        User user1 = usersMapper.selectUserByRegisterEmail(user);
+    public User selectUserByRegisterEmail(String email){
+        User user1 = usersMapper.selectUserByRegisterEmail(email);
         user1.setEncryptedPassword("zhebushixiaohaizigaikande");
+        if(user1.getRegisterPhone()==null){
+            user1.setRegisterPhone("void");
+        }
         return user1;
     }
 
@@ -84,6 +87,9 @@ public class UserService implements IUserService {
     public User selectUserByAccount(User user){
         User user1 = usersMapper.selectUserByAccount(user);
         user1.setEncryptedPassword("zhebushixiaohaizigaikande");
+        if(user1.getRegisterPhone()==null){
+            user1.setRegisterPhone("void");
+        }
         return user1;
     }
 }
