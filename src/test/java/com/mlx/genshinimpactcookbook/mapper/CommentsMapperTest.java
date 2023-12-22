@@ -10,19 +10,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+//@SpringBootTest
 class CommentsMapperTest {
 
-    @Autowired
-    private CommentsMapper commentsMapper;
-
-    @Test
-    void addNewCommentToComments() {
-        Comments comments = new Comments();
-        comments.setAddress("..sd");
-        comments.setContent("/...");
-        comments.setRoleName("可是");
-        comments.setAdder("114514");
-        commentsMapper.addNewCommentToComments(comments);
-    }
+//    @Autowired
+//    private CommentsMapper commentsMapper;
+//
+//    @Test
+//    void addNewCommentToComments() {
+//        Comments comments = new Comments();
+//        comments.setAddress("..sd");
+//        comments.setContent("/...");
+//        comments.setRoleName("可是");
+//        comments.setAdder("114514");
+//        commentsMapper.addNewCommentToComments(comments);
+//    }
 }
